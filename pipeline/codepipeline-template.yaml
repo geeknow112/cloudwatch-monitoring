@@ -33,7 +33,7 @@ Resources:
   ArtifactsBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Sub "${AWS::StackName}-pipeline-artifacts-${AWS::AccountId}"
+      BucketName: !Sub "cwm-pipeline-${AWS::AccountId}"
       VersioningConfiguration:
         Status: Enabled
       BucketEncryption:
@@ -75,11 +75,11 @@ Resources:
                   - s3:GetObjectVersion
                   - s3:PutObject
                 Resource:
-                  - !Sub "${ArtifactsBucket}/*"
+                  - !Sub "arn:aws:s3:::cwm-pipeline-${AWS::AccountId}/*"
               - Effect: Allow
                 Action:
                   - s3:ListBucket
-                Resource: !Ref ArtifactsBucket
+                Resource: !Sub "arn:aws:s3:::cwm-pipeline-${AWS::AccountId}"
 
   # CodeBuild Project
   CodeBuildProject:
@@ -162,8 +162,8 @@ Resources:
                   - s3:PutObject
                   - s3:GetBucketVersioning
                 Resource:
-                  - !Sub "${ArtifactsBucket}/*"
-                  - !Ref ArtifactsBucket
+                  - !Sub "arn:aws:s3:::cwm-pipeline-${AWS::AccountId}/*"
+                  - !Sub "arn:aws:s3:::cwm-pipeline-${AWS::AccountId}"
               - Effect: Allow
                 Action:
                   - codebuild:BatchGetBuilds

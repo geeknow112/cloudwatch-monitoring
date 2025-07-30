@@ -5,7 +5,7 @@
 set -e
 
 # Configuration
-STACK_NAME="cloudwatch-monitoring-pipeline"
+STACK_NAME="cwm-pipeline"
 TEMPLATE_FILE="pipeline/codepipeline-template.yaml"
 REGION="ap-northeast-1"
 PROFILE="lober-system"
