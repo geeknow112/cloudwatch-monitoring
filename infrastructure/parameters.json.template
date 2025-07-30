@@ -1,0 +1,11 @@
+{
+  "Parameters": {
+    "Environment": "prod",
+    "DefaultSlackWebhook": "https://hooks.slack.com/services/YOUR/DEFAULT/WEBHOOK",
+    "YC2SlackWebhook": "https://hooks.slack.com/services/YOUR/YC2/WEBHOOK",
+    "YC3SlackWebhook": "https://hooks.slack.com/services/YOUR/YC3/WEBHOOK",
+    "KeepaSlackWebhook": "https://hooks.slack.com/services/YOUR/KEEPA/WEBHOOK",
+    "DbcSlackWebhook": "https://hooks.slack.com/services/YOUR/DBC/WEBHOOK",
+    "LaborHackSlackWebhook": "https://hooks.slack.com/services/YOUR/LABOR_HACK/WEBHOOK"
+  }
+}

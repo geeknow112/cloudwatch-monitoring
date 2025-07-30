@@ -1,0 +1,39 @@
+{
+  "servers": {
+    "yc2": {
+      "url": "https://your-yc2-domain.com",
+      "path": "/",
+      "port": 80,
+      "slack": "https://hooks.slack.com/services/YOUR/YC2/WEBHOOK"
+    },
+    "yc3": {
+      "url": "https://your-yc3-domain.com",
+      "path": "/",
+      "port": 80,
+      "slack": "https://hooks.slack.com/services/YOUR/YC3/WEBHOOK"
+    },
+    "keepa": {
+      "url": "https://your-keepa-domain.com",
+      "path": "/",
+      "port": 80,
+      "slack": "https://hooks.slack.com/services/YOUR/KEEPA/WEBHOOK"
+    },
+    "dbc": {
+      "url": "https://your-dbc-domain.com",
+      "path": "/",
+      "port": 80,
+      "slack": "https://hooks.slack.com/services/YOUR/DBC/WEBHOOK"
+    },
+    "labor-hack": {
+      "url": "https://your-labor-hack-domain.com",
+      "path": "/",
+      "port": 80,
+      "slack": "https://hooks.slack.com/services/YOUR/LABOR_HACK/WEBHOOK"
+    }
+  },
+  "monitoring": {
+    "request_interval": 30,
+    "failure_threshold": 3,
+    "timeout": 10
+  }
+}

@@ -1,0 +1,276 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: CloudWatch Server Monitoring System
+
+Parameters:
+  Environment:
+    Type: String
+    Default: prod
+    AllowedValues: [dev, staging, prod]
+  
+  DefaultSlackWebhook:
+    Type: String
+    Description: Default Slack webhook URL
+    NoEcho: true
+  
+  YC2SlackWebhook:
+    Type: String
+    Description: YC2 Slack webhook URL
+    NoEcho: true
+    Default: ""
+  
+  YC3SlackWebhook:
+    Type: String
+    Description: YC3 Slack webhook URL
+    NoEcho: true
+    Default: ""
+  
+  KeepaSlackWebhook:
+    Type: String
+    Description: Keepa Slack webhook URL
+    NoEcho: true
+    Default: ""
+  
+  DbcSlackWebhook:
+    Type: String
+    Description: DBC Slack webhook URL
+    NoEcho: true
+    Default: ""
+  
+  LaborHackSlackWebhook:
+    Type: String
+    Description: Labor-hack Slack webhook URL
+    NoEcho: true
+    Default: ""
+
+Globals:
+  Function:
+    Timeout: 30
+    Runtime: python3.9
+    Environment:
+      Variables:
+        ENVIRONMENT: !Ref Environment
+
+Resources:
+  # SNS Topic for notifications
+  MonitoringTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: !Sub "${Environment}-server-monitoring-alerts"
+      DisplayName: Server Monitoring Alerts
+
+  # Lambda function for Slack notifications
+  SlackNotificationFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "${Environment}-slack-notification"
+      CodeUri: ../src/
+      Handler: slack-notification.lambda_handler
+      Environment:
+        Variables:
+          DEFAULT_SLACK_WEBHOOK: !Ref DefaultSlackWebhook
+          YC2_SLACK_WEBHOOK: !Ref YC2SlackWebhook
+          YC3_SLACK_WEBHOOK: !Ref YC3SlackWebhook
+          KEEPA_SLACK_WEBHOOK: !Ref KeepaSlackWebhook
+          DBC_SLACK_WEBHOOK: !Ref DbcSlackWebhook
+          LABOR_HACK_SLACK_WEBHOOK: !Ref LaborHackSlackWebhook
+      Events:
+        SNSEvent:
+          Type: SNS
+          Properties:
+            Topic: !Ref MonitoringTopic
+
+  # Route 53 Health Checks
+  YC2HealthCheck:
+    Type: AWS::Route53::HealthCheck
+    Properties:
+      Type: HTTP
+      ResourcePath: /
+      FullyQualifiedDomainName: your-yc2-domain.com
+      Port: 80
+      RequestInterval: 30
+      FailureThreshold: 3
+      MeasureLatency: true
+      Tags:
+        - Key: Name
+          Value: !Sub "${Environment}-yc2-health-check"
+        - Key: Environment
+          Value: !Ref Environment
+
+  YC3HealthCheck:
+    Type: AWS::Route53::HealthCheck
+    Properties:
+      Type: HTTP
+      ResourcePath: /
+      FullyQualifiedDomainName: your-yc3-domain.com
+      Port: 80
+      RequestInterval: 30
+      FailureThreshold: 3
+      MeasureLatency: true
+      Tags:
+        - Key: Name
+          Value: !Sub "${Environment}-yc3-health-check"
+        - Key: Environment
+          Value: !Ref Environment
+
+  KeepaHealthCheck:
+    Type: AWS::Route53::HealthCheck
+    Properties:
+      Type: HTTP
+      ResourcePath: /
+      FullyQualifiedDomainName: your-keepa-domain.com
+      Port: 80
+      RequestInterval: 30
+      FailureThreshold: 3
+      MeasureLatency: true
+      Tags:
+        - Key: Name
+          Value: !Sub "${Environment}-keepa-health-check"
+        - Key: Environment
+          Value: !Ref Environment
+
+  DbcHealthCheck:
+    Type: AWS::Route53::HealthCheck
+    Properties:
+      Type: HTTP
+      ResourcePath: /
+      FullyQualifiedDomainName: your-dbc-domain.com
+      Port: 80
+      RequestInterval: 30
+      FailureThreshold: 3
+      MeasureLatency: true
+      Tags:
+        - Key: Name
+          Value: !Sub "${Environment}-dbc-health-check"
+        - Key: Environment
+          Value: !Ref Environment
+
+  LaborHackHealthCheck:
+    Type: AWS::Route53::HealthCheck
+    Properties:
+      Type: HTTP
+      ResourcePath: /
+      FullyQualifiedDomainName: your-labor-hack-domain.com
+      Port: 80
+      RequestInterval: 30
+      FailureThreshold: 3
+      MeasureLatency: true
+      Tags:
+        - Key: Name
+          Value: !Sub "${Environment}-labor-hack-health-check"
+        - Key: Environment
+          Value: !Ref Environment
+
+  # CloudWatch Alarms
+  YC2HealthCheckAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub "${Environment}-yc2-health-check-failed"
+      AlarmDescription: YC2 server health check failed
+      MetricName: HealthCheckStatus
+      Namespace: AWS/Route53
+      Statistic: Minimum
+      Period: 60
+      EvaluationPeriods: 1
+      Threshold: 1
+      ComparisonOperator: LessThanThreshold
+      Dimensions:
+        - Name: HealthCheckId
+          Value: !Ref YC2HealthCheck
+      AlarmActions:
+        - !Ref MonitoringTopic
+      OKActions:
+        - !Ref MonitoringTopic
+
+  YC3HealthCheckAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub "${Environment}-yc3-health-check-failed"
+      AlarmDescription: YC3 server health check failed
+      MetricName: HealthCheckStatus
+      Namespace: AWS/Route53
+      Statistic: Minimum
+      Period: 60
+      EvaluationPeriods: 1
+      Threshold: 1
+      ComparisonOperator: LessThanThreshold
+      Dimensions:
+        - Name: HealthCheckId
+          Value: !Ref YC3HealthCheck
+      AlarmActions:
+        - !Ref MonitoringTopic
+      OKActions:
+        - !Ref MonitoringTopic
+
+  KeepaHealthCheckAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub "${Environment}-keepa-health-check-failed"
+      AlarmDescription: Keepa server health check failed
+      MetricName: HealthCheckStatus
+      Namespace: AWS/Route53
+      Statistic: Minimum
+      Period: 60
+      EvaluationPeriods: 1
+      Threshold: 1
+      ComparisonOperator: LessThanThreshold
+      Dimensions:
+        - Name: HealthCheckId
+          Value: !Ref KeepaHealthCheck
+      AlarmActions:
+        - !Ref MonitoringTopic
+      OKActions:
+        - !Ref MonitoringTopic
+
+  DbcHealthCheckAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub "${Environment}-dbc-health-check-failed"
+      AlarmDescription: DBC server health check failed
+      MetricName: HealthCheckStatus
+      Namespace: AWS/Route53
+      Statistic: Minimum
+      Period: 60
+      EvaluationPeriods: 1
+      Threshold: 1
+      ComparisonOperator: LessThanThreshold
+      Dimensions:
+        - Name: HealthCheckId
+          Value: !Ref DbcHealthCheck
+      AlarmActions:
+        - !Ref MonitoringTopic
+      OKActions:
+        - !Ref MonitoringTopic
+
+  LaborHackHealthCheckAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub "${Environment}-labor-hack-health-check-failed"
+      AlarmDescription: Labor-hack server health check failed
+      MetricName: HealthCheckStatus
+      Namespace: AWS/Route53
+      Statistic: Minimum
+      Period: 60
+      EvaluationPeriods: 1
+      Threshold: 1
+      ComparisonOperator: LessThanThreshold
+      Dimensions:
+        - Name: HealthCheckId
+          Value: !Ref LaborHackHealthCheck
+      AlarmActions:
+        - !Ref MonitoringTopic
+      OKActions:
+        - !Ref MonitoringTopic
+
+Outputs:
+  MonitoringTopicArn:
+    Description: SNS Topic ARN for monitoring alerts
+    Value: !Ref MonitoringTopic
+    Export:
+      Name: !Sub "${Environment}-monitoring-topic-arn"
+  
+  SlackNotificationFunctionArn:
+    Description: Slack notification Lambda function ARN
+    Value: !GetAtt SlackNotificationFunction.Arn
+    Export:
+      Name: !Sub "${Environment}-slack-notification-function-arn"
