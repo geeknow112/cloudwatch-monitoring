@@ -84,10 +84,10 @@ Resources:
   YC2HealthCheck:
     Type: AWS::Route53::HealthCheck
     Properties:
-      Type: HTTP
+      Type: HTTPS
       ResourcePath: /
-      FullyQualifiedDomainName: your-yc2-domain.com
-      Port: 80
+      FullyQualifiedDomainName: ycstg.lober-env-imp.work
+      Port: 443
       RequestInterval: 30
       FailureThreshold: 3
       MeasureLatency: true
@@ -100,10 +100,10 @@ Resources:
   YC3HealthCheck:
     Type: AWS::Route53::HealthCheck
     Properties:
-      Type: HTTP
+      Type: HTTPS
       ResourcePath: /
-      FullyQualifiedDomainName: your-yc3-domain.com
-      Port: 80
+      FullyQualifiedDomainName: yamachu.lober-env-imp.work
+      Port: 443
       RequestInterval: 30
       FailureThreshold: 3
       MeasureLatency: true
@@ -116,10 +116,10 @@ Resources:
   KeepaHealthCheck:
     Type: AWS::Route53::HealthCheck
     Properties:
-      Type: HTTP
+      Type: HTTPS
       ResourcePath: /
-      FullyQualifiedDomainName: your-keepa-domain.com
-      Port: 80
+      FullyQualifiedDomainName: ycstg.lober-env-imp.work
+      Port: 443
       RequestInterval: 30
       FailureThreshold: 3
       MeasureLatency: true
@@ -132,10 +132,10 @@ Resources:
   DbcHealthCheck:
     Type: AWS::Route53::HealthCheck
     Properties:
-      Type: HTTP
-      ResourcePath: /
-      FullyQualifiedDomainName: your-dbc-domain.com
-      Port: 80
+      Type: HTTPS
+      ResourcePath: /wp-login.php
+      FullyQualifiedDomainName: dbc.47club.co.jp
+      Port: 443
       RequestInterval: 30
       FailureThreshold: 3
       MeasureLatency: true
@@ -148,10 +148,10 @@ Resources:
   LaborHackHealthCheck:
     Type: AWS::Route53::HealthCheck
     Properties:
-      Type: HTTP
+      Type: HTTPS
       ResourcePath: /
-      FullyQualifiedDomainName: your-labor-hack-domain.com
-      Port: 80
+      FullyQualifiedDomainName: hack-note.com
+      Port: 443
       RequestInterval: 30
       FailureThreshold: 3
       MeasureLatency: true
