@@ -108,14 +108,14 @@ Resources:
   MonitoringTopic:
     Type: AWS::SNS::Topic
     Properties:
-      TopicName: !Sub "${Environment}-server-monitoring-alerts"
-      DisplayName: Server Monitoring Alerts
+      TopicName: !Sub "${Environment}-system-alerts"
+      DisplayName: System Monitoring Alerts
 
   # Lambda function for Slack notifications
   SlackNotificationFunction:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub "${Environment}-slack-notification"
+      FunctionName: !Sub "${Environment}-notification-handler"
       CodeUri: ../src/
       Handler: slack-notification.lambda_handler
       Environment:
@@ -146,7 +146,7 @@ Resources:
         MeasureLatency: true
       HealthCheckTags:
         - Key: Name
-          Value: !Sub "${Environment}-yc2-health-check"
+          Value: !Sub "${Environment}-server-001-health-check"
         - Key: Environment
           Value: !Ref Environment
 
@@ -163,7 +163,7 @@ Resources:
         MeasureLatency: true
       HealthCheckTags:
         - Key: Name
-          Value: !Sub "${Environment}-yc3-health-check"
+          Value: !Sub "${Environment}-server-002-health-check"
         - Key: Environment
           Value: !Ref Environment
 
@@ -180,7 +180,7 @@ Resources:
         MeasureLatency: true
       HealthCheckTags:
         - Key: Name
-          Value: !Sub "${Environment}-keepa-health-check"
+          Value: !Sub "${Environment}-server-003-health-check"
         - Key: Environment
           Value: !Ref Environment
 
@@ -197,7 +197,7 @@ Resources:
         MeasureLatency: true
       HealthCheckTags:
         - Key: Name
-          Value: !Sub "${Environment}-dbc-health-check"
+          Value: !Sub "${Environment}-server-004-health-check"
         - Key: Environment
           Value: !Ref Environment
 
@@ -214,7 +214,7 @@ Resources:
         MeasureLatency: true
       HealthCheckTags:
         - Key: Name
-          Value: !Sub "${Environment}-labor-hack-health-check"
+          Value: !Sub "${Environment}-server-005-health-check"
         - Key: Environment
           Value: !Ref Environment
 
@@ -222,8 +222,8 @@ Resources:
   YC2HealthCheckAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
-      AlarmName: !Sub "${Environment}-yc2-health-check-failed"
-      AlarmDescription: YC2 server health check failed
+      AlarmName: !Sub "${Environment}-server-001-health-check-failed"
+      AlarmDescription: Server 001 health check failed
       MetricName: HealthCheckStatus
       Namespace: AWS/Route53
       Statistic: Minimum
@@ -242,8 +242,8 @@ Resources:
   YC3HealthCheckAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
-      AlarmName: !Sub "${Environment}-yc3-health-check-failed"
-      AlarmDescription: YC3 server health check failed
+      AlarmName: !Sub "${Environment}-server-002-health-check-failed"
+      AlarmDescription: Server 002 health check failed
       MetricName: HealthCheckStatus
       Namespace: AWS/Route53
       Statistic: Minimum
@@ -262,8 +262,8 @@ Resources:
   KeepaHealthCheckAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
-      AlarmName: !Sub "${Environment}-keepa-health-check-failed"
-      AlarmDescription: Keepa server health check failed
+      AlarmName: !Sub "${Environment}-server-003-health-check-failed"
+      AlarmDescription: Server 003 health check failed
       MetricName: HealthCheckStatus
       Namespace: AWS/Route53
       Statistic: Minimum
@@ -282,8 +282,8 @@ Resources:
   DbcHealthCheckAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
-      AlarmName: !Sub "${Environment}-dbc-health-check-failed"
-      AlarmDescription: DBC server health check failed
+      AlarmName: !Sub "${Environment}-server-004-health-check-failed"
+      AlarmDescription: Server 004 health check failed
       MetricName: HealthCheckStatus
       Namespace: AWS/Route53
       Statistic: Minimum
@@ -302,8 +302,8 @@ Resources:
   LaborHackHealthCheckAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
-      AlarmName: !Sub "${Environment}-labor-hack-health-check-failed"
-      AlarmDescription: Labor-hack server health check failed
+      AlarmName: !Sub "${Environment}-server-005-health-check-failed"
+      AlarmDescription: Server 005 health check failed
       MetricName: HealthCheckStatus
       Namespace: AWS/Route53
       Statistic: Minimum
