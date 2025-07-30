@@ -254,12 +254,12 @@ Resources:
                     "KeepaPath": "/", 
                     "DbcPath": "/wp-login.php",
                     "LaborHackPath": "/",
-                    "DefaultSlackWebhook": "https://hooks.slack.com/services/PLACEHOLDER/WEBHOOK/URL",
-                    "YC2SlackWebhook": "https://hooks.slack.com/services/PLACEHOLDER/WEBHOOK/URL",
-                    "YC3SlackWebhook": "https://hooks.slack.com/services/PLACEHOLDER/WEBHOOK/URL",
-                    "KeepaSlackWebhook": "https://hooks.slack.com/services/PLACEHOLDER/WEBHOOK/URL",
-                    "DbcSlackWebhook": "https://hooks.slack.com/services/PLACEHOLDER/WEBHOOK/URL",
-                    "LaborHackSlackWebhook": "https://hooks.slack.com/services/PLACEHOLDER/WEBHOOK/URL"
+                    "DefaultSlackWebhook": "https://hooks.slack.com/services/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",
+                    "YC2SlackWebhook": "https://hooks.slack.com/services/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",
+                    "YC3SlackWebhook": "https://hooks.slack.com/services/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",
+                    "KeepaSlackWebhook": "https://hooks.slack.com/services/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",
+                    "DbcSlackWebhook": "https://hooks.slack.com/services/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",
+                    "LaborHackSlackWebhook": "https://hooks.slack.com/services/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"
                   }
               InputArtifacts:
                 - Name: BuildOutput
