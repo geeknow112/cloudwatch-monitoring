@@ -244,22 +244,22 @@ Resources:
                 ParameterOverrides: !Sub |
                   {
                     "Environment": "${Environment}",
-                    "YC2Domain": "server-001.monitoring.local",
-                    "YC3Domain": "server-002.monitoring.local", 
-                    "KeepaDomain": "server-003.monitoring.local",
-                    "DbcDomain": "server-004.monitoring.local",
-                    "LaborHackDomain": "server-005.monitoring.local",
+                    "YC2Domain": "ycstg.lober-env-imp.work",
+                    "YC3Domain": "yamachu.lober-env-imp.work", 
+                    "KeepaDomain": "ycstg.lober-env-imp.work",
+                    "DbcDomain": "dbc.47club.co.jp",
+                    "LaborHackDomain": "hack-note.com",
                     "YC2Path": "/",
                     "YC3Path": "/",
                     "KeepaPath": "/", 
-                    "DbcPath": "/",
+                    "DbcPath": "/wp-login.php",
                     "LaborHackPath": "/",
-                    "DefaultSlackWebhook": "https://hooks.slack.com/services/PLACEHOLDER/WEBHOOK/URL",
-                    "YC2SlackWebhook": "",
-                    "YC3SlackWebhook": "",
-                    "KeepaSlackWebhook": "",
-                    "DbcSlackWebhook": "",
-                    "LaborHackSlackWebhook": ""
+                    "DefaultSlackWebhook": "https://hooks.slack.com/services/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",
+                    "YC2SlackWebhook": "https://hooks.slack.com/services/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",
+                    "YC3SlackWebhook": "https://hooks.slack.com/services/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",
+                    "KeepaSlackWebhook": "https://hooks.slack.com/services/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",
+                    "DbcSlackWebhook": "https://hooks.slack.com/services/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",
+                    "LaborHackSlackWebhook": "https://hooks.slack.com/services/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"
                   }
                 Capabilities: CAPABILITY_IAM
                 RoleArn: !GetAtt CloudFormationServiceRole.Arn
