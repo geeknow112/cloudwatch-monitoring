@@ -239,6 +239,8 @@ Resources:
                 ActionMode: CREATE_UPDATE
                 StackName: cloudwatch-monitoring
                 TemplatePath: BuildOutput::packaged-template.yaml
+                Capabilities: CAPABILITY_IAM,CAPABILITY_NAMED_IAM
+                RoleArn: !GetAtt CloudFormationServiceRole.Arn
                 ParameterOverrides: !Sub |
                   {
                     "Environment": "${Environment}",
@@ -259,8 +261,6 @@ Resources:
                     "DbcSlackWebhook": "https://hooks.slack.com/services/PLACEHOLDER/WEBHOOK/URL",
                     "LaborHackSlackWebhook": "https://hooks.slack.com/services/PLACEHOLDER/WEBHOOK/URL"
                   }
-                Capabilities: CAPABILITY_IAM
-                RoleArn: !GetAtt CloudFormationServiceRole.Arn
               InputArtifacts:
                 - Name: BuildOutput
 
