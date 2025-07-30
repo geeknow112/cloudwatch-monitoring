@@ -103,7 +103,46 @@ Globals:
       Variables:
         ENVIRONMENT: !Ref Environment
 
+Conditions:
+  HasYC2Webhook: !Not [!Equals [!Ref YC2SlackWebhook, ""]]
+  HasYC3Webhook: !Not [!Equals [!Ref YC3SlackWebhook, ""]]
+  HasKeepaWebhook: !Not [!Equals [!Ref KeepaSlackWebhook, ""]]
+  HasDbcWebhook: !Not [!Equals [!Ref DbcSlackWebhook, ""]]
+  HasLaborHackWebhook: !Not [!Equals [!Ref LaborHackSlackWebhook, ""]]
+
 Resources:
+  # Regular OK Status Check Function
+  StatusCheckFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "${Environment}-status-checker"
+      CodeUri: ../src/
+      Handler: status_checker.lambda_handler
+      Runtime: python3.9
+      Timeout: 60
+      Environment:
+        Variables:
+          DEFAULT_SLACK_WEBHOOK: !Ref DefaultSlackWebhook
+          YC2_SLACK_WEBHOOK: !Ref YC2SlackWebhook
+          YC3_SLACK_WEBHOOK: !Ref YC3SlackWebhook
+          KEEPA_SLACK_WEBHOOK: !Ref KeepaSlackWebhook
+          DBC_SLACK_WEBHOOK: !Ref DbcSlackWebhook
+          LABOR_HACK_SLACK_WEBHOOK: !Ref LaborHackSlackWebhook
+          YC2_HEALTH_CHECK_ID: !Ref YC2HealthCheck
+          YC3_HEALTH_CHECK_ID: !Ref YC3HealthCheck
+          KEEPA_HEALTH_CHECK_ID: !Ref KeepaHealthCheck
+          DBC_HEALTH_CHECK_ID: !Ref DbcHealthCheck
+          LABOR_HACK_HEALTH_CHECK_ID: !Ref LaborHackHealthCheck
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - route53:GetHealthCheck
+                - route53:GetHealthCheckStatus
+                - route53:ListHealthChecks
+              Resource: '*'
+
   # SNS Topic for notifications
   MonitoringTopic:
     Type: AWS::SNS::Topic
@@ -117,7 +156,7 @@ Resources:
     Properties:
       FunctionName: !Sub "${Environment}-notification-handler"
       CodeUri: ../src/
-      Handler: slack-notification.lambda_handler
+      Handler: slack_notification.lambda_handler
       Environment:
         Variables:
           DEFAULT_SLACK_WEBHOOK: !Ref DefaultSlackWebhook
