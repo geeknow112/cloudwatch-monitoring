@@ -126,21 +126,14 @@ Resources:
             Statement:
               - Effect: Allow
                 Action:
-                  - iam:CreateRole
-                  - iam:DeleteRole
-                  - iam:GetRole
-                  - iam:PassRole
-                  - iam:AttachRolePolicy
-                  - iam:DetachRolePolicy
-                  - iam:PutRolePolicy
-                  - iam:DeleteRolePolicy
-                  - iam:GetRolePolicy
-                  - iam:CreateServiceLinkedRole
-                  - events:PutRule
-                  - events:DeleteRule
-                  - events:PutTargets
-                  - events:RemoveTargets
-                  - events:DescribeRule
+                  - iam:*
+                  - events:*
+                  - lambda:*
+                  - logs:*
+                  - route53:*
+                  - cloudwatch:*
+                  - sns:*
+                  - s3:*
                 Resource: "*"
 
   # CodePipeline Service Role
