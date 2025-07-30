@@ -14,8 +14,8 @@ Parameters:
   
   SlackChannelId:
     Type: String
-    Description: Slack Channel ID for notifications (例: C1234567890)
-    # 実際のSlackチャンネルIDを設定する必要があります
+    Description: Slack Channel ID for notifications
+    Default: C095CEZTSRZ
     
   SNSTopicArn:
     Type: String

@@ -133,6 +133,7 @@ Resources:
           KEEPA_HEALTH_CHECK_ID: !Ref KeepaHealthCheck
           DBC_HEALTH_CHECK_ID: !Ref DbcHealthCheck
           LABOR_HACK_HEALTH_CHECK_ID: !Ref LaborHackHealthCheck
+          SNS_TOPIC_ARN: !Ref MonitoringTopic
       Policies:
         - Version: '2012-10-17'
           Statement:
@@ -142,6 +143,10 @@ Resources:
                 - route53:GetHealthCheckStatus
                 - route53:ListHealthChecks
               Resource: '*'
+            - Effect: Allow
+              Action:
+                - sns:Publish
+              Resource: !Ref MonitoringTopic
 
   # SNS Topic for notifications
   MonitoringTopic:
