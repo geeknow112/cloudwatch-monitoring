@@ -31,5 +31,4 @@ phases:
 artifacts:
   files:
     - packaged-template.yaml
-    - infrastructure/parameters.json
   name: cloudwatch-monitoring-artifacts

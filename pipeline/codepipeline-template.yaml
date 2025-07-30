@@ -136,6 +136,11 @@ Resources:
                   - iam:DeleteRolePolicy
                   - iam:GetRolePolicy
                   - iam:CreateServiceLinkedRole
+                  - events:PutRule
+                  - events:DeleteRule
+                  - events:PutTargets
+                  - events:RemoveTargets
+                  - events:DescribeRule
                 Resource: "*"
 
   # CodePipeline Service Role
