@@ -42,10 +42,21 @@ fi
 
 # Check AWS credentials
 echo -e "${YELLOW}Checking AWS credentials...${NC}"
-if ! aws sts get-caller-identity &> /dev/null; then
-    echo -e "${RED}Error: AWS credentials not configured${NC}"
-    echo "Please run: aws configure"
-    exit 1
+if [ -n "$AWS_PROFILE" ]; then
+    if ! aws sts get-caller-identity --profile $AWS_PROFILE &> /dev/null; then
+        echo -e "${RED}Error: AWS credentials not configured for profile $AWS_PROFILE${NC}"
+        echo "Please run: aws configure --profile $AWS_PROFILE"
+        exit 1
+    fi
+    echo -e "${GREEN}Using AWS profile: $AWS_PROFILE${NC}"
+    AWS_PROFILE_PARAM="--profile $AWS_PROFILE"
+else
+    if ! aws sts get-caller-identity &> /dev/null; then
+        echo -e "${RED}Error: AWS credentials not configured${NC}"
+        echo "Please run: aws configure"
+        exit 1
+    fi
+    AWS_PROFILE_PARAM=""
 fi
 
 # Get GitHub token if not provided
@@ -69,7 +80,8 @@ aws cloudformation deploy \
         GitHubRepo=$GITHUB_REPO \
         GitHubBranch=$GITHUB_BRANCH \
     --capabilities CAPABILITY_IAM \
-    --region $REGION
+    --region $REGION \
+    $AWS_PROFILE_PARAM
 
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}CodePipeline deployed successfully!${NC}"
@@ -79,7 +91,8 @@ if [ $? -eq 0 ]; then
         --stack-name $STACK_NAME \
         --query 'Stacks[0].Outputs[?OutputKey==`PipelineName`].OutputValue' \
         --output text \
-        --region $REGION)
+        --region $REGION \
+        $AWS_PROFILE_PARAM)
     
     echo -e "${GREEN}Pipeline URL: https://console.aws.amazon.com/codesuite/codepipeline/pipelines/${PIPELINE_NAME}/view${NC}"
     

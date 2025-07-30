@@ -84,14 +84,15 @@ Resources:
   YC2HealthCheck:
     Type: AWS::Route53::HealthCheck
     Properties:
-      Type: HTTPS
-      ResourcePath: /
-      FullyQualifiedDomainName: ycstg.lober-env-imp.work
-      Port: 443
-      RequestInterval: 30
-      FailureThreshold: 3
-      MeasureLatency: true
-      Tags:
+      HealthCheckConfig:
+        Type: HTTPS
+        ResourcePath: /
+        FullyQualifiedDomainName: ycstg.lober-env-imp.work
+        Port: 443
+        RequestInterval: 30
+        FailureThreshold: 3
+        MeasureLatency: true
+      HealthCheckTags:
         - Key: Name
           Value: !Sub "${Environment}-yc2-health-check"
         - Key: Environment
@@ -100,14 +101,15 @@ Resources:
   YC3HealthCheck:
     Type: AWS::Route53::HealthCheck
     Properties:
-      Type: HTTPS
-      ResourcePath: /
-      FullyQualifiedDomainName: yamachu.lober-env-imp.work
-      Port: 443
-      RequestInterval: 30
-      FailureThreshold: 3
-      MeasureLatency: true
-      Tags:
+      HealthCheckConfig:
+        Type: HTTPS
+        ResourcePath: /
+        FullyQualifiedDomainName: yamachu.lober-env-imp.work
+        Port: 443
+        RequestInterval: 30
+        FailureThreshold: 3
+        MeasureLatency: true
+      HealthCheckTags:
         - Key: Name
           Value: !Sub "${Environment}-yc3-health-check"
         - Key: Environment
@@ -116,14 +118,15 @@ Resources:
   KeepaHealthCheck:
     Type: AWS::Route53::HealthCheck
     Properties:
-      Type: HTTPS
-      ResourcePath: /
-      FullyQualifiedDomainName: ycstg.lober-env-imp.work
-      Port: 443
-      RequestInterval: 30
-      FailureThreshold: 3
-      MeasureLatency: true
-      Tags:
+      HealthCheckConfig:
+        Type: HTTPS
+        ResourcePath: /
+        FullyQualifiedDomainName: ycstg.lober-env-imp.work
+        Port: 443
+        RequestInterval: 30
+        FailureThreshold: 3
+        MeasureLatency: true
+      HealthCheckTags:
         - Key: Name
           Value: !Sub "${Environment}-keepa-health-check"
         - Key: Environment
@@ -132,14 +135,15 @@ Resources:
   DbcHealthCheck:
     Type: AWS::Route53::HealthCheck
     Properties:
-      Type: HTTPS
-      ResourcePath: /wp-login.php
-      FullyQualifiedDomainName: dbc.47club.co.jp
-      Port: 443
-      RequestInterval: 30
-      FailureThreshold: 3
-      MeasureLatency: true
-      Tags:
+      HealthCheckConfig:
+        Type: HTTPS
+        ResourcePath: /wp-login.php
+        FullyQualifiedDomainName: dbc.47club.co.jp
+        Port: 443
+        RequestInterval: 30
+        FailureThreshold: 3
+        MeasureLatency: true
+      HealthCheckTags:
         - Key: Name
           Value: !Sub "${Environment}-dbc-health-check"
         - Key: Environment
@@ -148,14 +152,15 @@ Resources:
   LaborHackHealthCheck:
     Type: AWS::Route53::HealthCheck
     Properties:
-      Type: HTTPS
-      ResourcePath: /
-      FullyQualifiedDomainName: hack-note.com
-      Port: 443
-      RequestInterval: 30
-      FailureThreshold: 3
-      MeasureLatency: true
-      Tags:
+      HealthCheckConfig:
+        Type: HTTPS
+        ResourcePath: /
+        FullyQualifiedDomainName: hack-note.com
+        Port: 443
+        RequestInterval: 30
+        FailureThreshold: 3
+        MeasureLatency: true
+      HealthCheckTags:
         - Key: Name
           Value: !Sub "${Environment}-labor-hack-health-check"
         - Key: Environment

@@ -67,7 +67,7 @@ Resources:
               - Effect: Allow
                 Action:
                   - s3:ListBucket
-                Resource: !Ref ArtifactsBucket
+                Resource: !GetAtt ArtifactsBucket.Arn
 
   # CodeBuild Project
   CodeBuildProject:
@@ -112,7 +112,7 @@ Resources:
                   - s3:GetBucketVersioning
                 Resource:
                   - !Sub "${ArtifactsBucket}/*"
-                  - !Ref ArtifactsBucket
+                  - !GetAtt ArtifactsBucket.Arn
               - Effect: Allow
                 Action:
                   - codebuild:BatchGetBuilds
