@@ -1,0 +1,21 @@
+{
+  "Parameters": {
+    "Environment": "prod",
+    "YC2Domain": "server-001.monitoring.local",
+    "YC3Domain": "server-002.monitoring.local", 
+    "KeepaDomain": "server-003.monitoring.local",
+    "DbcDomain": "server-004.monitoring.local",
+    "LaborHackDomain": "server-005.monitoring.local",
+    "YC2Path": "/",
+    "YC3Path": "/",
+    "KeepaPath": "/",
+    "DbcPath": "/",
+    "LaborHackPath": "/",
+    "DefaultSlackWebhook": "https://hooks.slack.com/services/PLACEHOLDER/WEBHOOK/URL",
+    "YC2SlackWebhook": "",
+    "YC3SlackWebhook": "",
+    "KeepaSlackWebhook": "",
+    "DbcSlackWebhook": "",
+    "LaborHackSlackWebhook": ""
+  }
+}
