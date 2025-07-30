@@ -252,12 +252,12 @@ Resources:
                     "KeepaPath": "/", 
                     "DbcPath": "/wp-login.php",
                     "LaborHackPath": "/",
-                    "DefaultSlackWebhook": "https://hooks.slack.com/services/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",
-                    "YC2SlackWebhook": "https://hooks.slack.com/services/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",
-                    "YC3SlackWebhook": "https://hooks.slack.com/services/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",
-                    "KeepaSlackWebhook": "https://hooks.slack.com/services/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",
-                    "DbcSlackWebhook": "https://hooks.slack.com/services/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",
-                    "LaborHackSlackWebhook": "https://hooks.slack.com/services/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"
+                    "DefaultSlackWebhook": "https://hooks.slack.com/services/PLACEHOLDER/WEBHOOK/URL",
+                    "YC2SlackWebhook": "https://hooks.slack.com/services/PLACEHOLDER/WEBHOOK/URL",
+                    "YC3SlackWebhook": "https://hooks.slack.com/services/PLACEHOLDER/WEBHOOK/URL",
+                    "KeepaSlackWebhook": "https://hooks.slack.com/services/PLACEHOLDER/WEBHOOK/URL",
+                    "DbcSlackWebhook": "https://hooks.slack.com/services/PLACEHOLDER/WEBHOOK/URL",
+                    "LaborHackSlackWebhook": "https://hooks.slack.com/services/PLACEHOLDER/WEBHOOK/URL"
                   }
                 Capabilities: CAPABILITY_IAM
                 RoleArn: !GetAtt CloudFormationServiceRole.Arn
