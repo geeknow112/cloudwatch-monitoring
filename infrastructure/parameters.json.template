@@ -1,11 +1,21 @@
 {
   "Parameters": {
     "Environment": "prod",
-    "DefaultSlackWebhook": "https://hooks.slack.com/services/YOUR/DEFAULT/WEBHOOK",
+    "DefaultSlackWebhook": "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK",
     "YC2SlackWebhook": "https://hooks.slack.com/services/YOUR/YC2/WEBHOOK",
     "YC3SlackWebhook": "https://hooks.slack.com/services/YOUR/YC3/WEBHOOK",
     "KeepaSlackWebhook": "https://hooks.slack.com/services/YOUR/KEEPA/WEBHOOK",
     "DbcSlackWebhook": "https://hooks.slack.com/services/YOUR/DBC/WEBHOOK",
-    "LaborHackSlackWebhook": "https://hooks.slack.com/services/YOUR/LABOR_HACK/WEBHOOK"
+    "LaborHackSlackWebhook": "https://hooks.slack.com/services/YOUR/LABOR-HACK/WEBHOOK",
+    "YC2Domain": "your-yc2-domain.com",
+    "YC3Domain": "your-yc3-domain.com",
+    "KeepaDomain": "your-keepa-domain.com",
+    "DbcDomain": "your-dbc-domain.com",
+    "LaborHackDomain": "your-labor-hack-domain.com",
+    "YC2Path": "/",
+    "YC3Path": "/",
+    "KeepaPath": "/",
+    "DbcPath": "/wp-login.php",
+    "LaborHackPath": "/"
   }
 }

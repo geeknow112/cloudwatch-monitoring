@@ -50,3 +50,38 @@ cloudwatch-monitoring/
 3. 初回デプロイの実行
 
 詳細は各ディレクトリのREADMEを参照してください。
+
+## 🔧 Configuration Parameters
+
+### Domain Names and Paths
+All server URLs and paths are now parameterized for security:
+
+```bash
+# Example deployment with parameters
+sam deploy --template-file infrastructure/template.yaml \
+  --stack-name cloudwatch-monitoring \
+  --parameter-overrides \
+    Environment=prod \
+    YC2Domain=your-yc2-domain.com \
+    YC3Domain=your-yc3-domain.com \
+    KeepaDomain=your-keepa-domain.com \
+    DbcDomain=your-dbc-domain.com \
+    LaborHackDomain=your-labor-hack-domain.com \
+    YC2Path=/ \
+    YC3Path=/ \
+    KeepaPath=/ \
+    DbcPath=/wp-login.php \
+    LaborHackPath=/ \
+    DefaultSlackWebhook=https://hooks.slack.com/services/YOUR/DEFAULT/WEBHOOK \
+    [... other Slack webhooks ...] \
+  --capabilities CAPABILITY_IAM \
+  --region ap-northeast-1 \
+  --profile your-aws-profile \
+  --resolve-s3
+```
+
+### Security Notes
+- ✅ No hardcoded URLs in CloudFormation templates
+- ✅ All sensitive data passed as parameters
+- ✅ Configuration files excluded from Git
+- ✅ Template files contain only placeholders

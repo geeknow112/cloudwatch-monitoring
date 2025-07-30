@@ -43,6 +43,58 @@ Parameters:
     NoEcho: true
     Default: ""
 
+  # Server Domain Names
+  YC2Domain:
+    Type: String
+    Description: YC2 server domain name
+    Default: your-yc2-domain.com
+
+  YC3Domain:
+    Type: String
+    Description: YC3 server domain name
+    Default: your-yc3-domain.com
+
+  KeepaDomain:
+    Type: String
+    Description: Keepa server domain name
+    Default: your-keepa-domain.com
+
+  DbcDomain:
+    Type: String
+    Description: DBC server domain name
+    Default: your-dbc-domain.com
+
+  LaborHackDomain:
+    Type: String
+    Description: Labor Hack server domain name
+    Default: your-labor-hack-domain.com
+
+  # Server Paths
+  YC2Path:
+    Type: String
+    Description: YC2 server health check path
+    Default: /
+
+  YC3Path:
+    Type: String
+    Description: YC3 server health check path
+    Default: /
+
+  KeepaPath:
+    Type: String
+    Description: Keepa server health check path
+    Default: /
+
+  DbcPath:
+    Type: String
+    Description: DBC server health check path
+    Default: /
+
+  LaborHackPath:
+    Type: String
+    Description: Labor Hack server health check path
+    Default: /
+
 Globals:
   Function:
     Timeout: 30
@@ -86,8 +138,8 @@ Resources:
     Properties:
       HealthCheckConfig:
         Type: HTTPS
-        ResourcePath: /
-        FullyQualifiedDomainName: ycstg.lober-env-imp.work
+        ResourcePath: !Ref YC2Path
+        FullyQualifiedDomainName: !Ref YC2Domain
         Port: 443
         RequestInterval: 30
         FailureThreshold: 3
@@ -103,8 +155,8 @@ Resources:
     Properties:
       HealthCheckConfig:
         Type: HTTPS
-        ResourcePath: /
-        FullyQualifiedDomainName: yamachu.lober-env-imp.work
+        ResourcePath: !Ref YC3Path
+        FullyQualifiedDomainName: !Ref YC3Domain
         Port: 443
         RequestInterval: 30
         FailureThreshold: 3
@@ -120,8 +172,8 @@ Resources:
     Properties:
       HealthCheckConfig:
         Type: HTTPS
-        ResourcePath: /
-        FullyQualifiedDomainName: ycstg.lober-env-imp.work
+        ResourcePath: !Ref KeepaPath
+        FullyQualifiedDomainName: !Ref KeepaDomain
         Port: 443
         RequestInterval: 30
         FailureThreshold: 3
@@ -137,8 +189,8 @@ Resources:
     Properties:
       HealthCheckConfig:
         Type: HTTPS
-        ResourcePath: /wp-login.php
-        FullyQualifiedDomainName: dbc.47club.co.jp
+        ResourcePath: !Ref DbcPath
+        FullyQualifiedDomainName: !Ref DbcDomain
         Port: 443
         RequestInterval: 30
         FailureThreshold: 3
@@ -154,8 +206,8 @@ Resources:
     Properties:
       HealthCheckConfig:
         Type: HTTPS
-        ResourcePath: /
-        FullyQualifiedDomainName: hack-note.com
+        ResourcePath: !Ref LaborHackPath
+        FullyQualifiedDomainName: !Ref LaborHackDomain
         Port: 443
         RequestInterval: 30
         FailureThreshold: 3

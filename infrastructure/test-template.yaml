@@ -7,6 +7,11 @@ Parameters:
     Default: prod
     AllowedValues: [dev, staging, prod]
 
+  TestDomain:
+    Type: String
+    Description: Test domain name for health check
+    Default: your-test-domain.com
+
 Resources:
   # Route 53 Health Checks only for testing
   YC2HealthCheck:
@@ -15,7 +20,7 @@ Resources:
       HealthCheckConfig:
         Type: HTTPS
         ResourcePath: /
-        FullyQualifiedDomainName: ycstg.lober-env-imp.work
+        FullyQualifiedDomainName: !Ref TestDomain
         Port: 443
         RequestInterval: 30
         FailureThreshold: 3
