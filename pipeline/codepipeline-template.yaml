@@ -244,7 +244,7 @@ Resources:
                 Version: '1'
               Configuration:
                 ActionMode: CREATE_UPDATE
-                StackName: !Sub "${Environment}-cloudwatch-monitoring"
+                StackName: cloudwatch-monitoring
                 TemplatePath: BuildOutput::packaged-template.yaml
                 ParameterOverrides: !Sub |
                   {
