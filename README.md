@@ -45,9 +45,23 @@ cloudwatch-monitoring/
 
 ## セットアップ手順
 
+### Option A: CodePipeline Deployment (推奨)
+
+```bash
+# 1. GitHub personal access tokenを設定
+export GITHUB_TOKEN=your_github_token_here
+
+# 2. CodePipelineをデプロイ
+./scripts/deploy-pipeline.sh
+
+# 3. mainブランチへのpush時に自動デプロイされます
+```
+
+### Option B: 直接デプロイ
+
 1. 設定ファイルの編集（config/servers.json）
-2. CodePipelineの作成
-3. 初回デプロイの実行
+2. SAM CLIでの直接デプロイ
+3. 手動での設定更新
 
 詳細は各ディレクトリのREADMEを参照してください。
 
