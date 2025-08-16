@@ -363,6 +363,36 @@ Resources:
       OKActions:
         - !Ref MonitoringTopic
 
+  # 定期レポート用Lambda関数
+  ScheduledStatusReportFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "${Environment}-scheduled-status-report"
+      CodeUri: ../src/
+      Handler: scheduled_status_report.lambda_handler
+      Runtime: python3.9
+      Timeout: 60
+      MemorySize: 128
+      Environment:
+        Variables:
+          ENVIRONMENT: !Ref Environment
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - route53:GetHealthCheckStatus
+                - cloudwatch:PutMetricAlarm
+                - cloudwatch:SetAlarmState
+              Resource: '*'
+      Events:
+        ScheduledReport:
+          Type: Schedule
+          Properties:
+            Schedule: rate(1 hour)  # 1時間毎に実行
+            Description: "定期的なサーバー状況レポート"
+            Enabled: true
+
 Outputs:
   MonitoringTopicArn:
     Description: SNS Topic ARN for monitoring alerts
@@ -375,3 +405,9 @@ Outputs:
     Value: !GetAtt SlackNotificationFunction.Arn
     Export:
       Name: !Sub "${Environment}-slack-notification-function-arn"
+  
+  ScheduledStatusReportFunctionArn:
+    Description: Scheduled status report Lambda function ARN
+    Value: !GetAtt ScheduledStatusReportFunction.Arn
+    Export:
+      Name: !Sub "${Environment}-scheduled-status-report-function-arn"
