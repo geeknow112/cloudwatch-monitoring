@@ -1,0 +1,88 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: CloudWatch監視システム + 自動復旧機能
+
+Parameters:
+  Environment:
+    Type: String
+    Default: prod
+    Description: Environment name
+
+Resources:
+  # SNS Topic
+  MonitoringTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: !Sub "${Environment}-auto-recovery-alerts"
+      DisplayName: "Auto Recovery Monitoring Alerts"
+
+  # 自動復旧監視Lambda関数
+  AutoRecoveryMonitorFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "${Environment}-auto-recovery-monitor"
+      CodeUri: ../src/
+      Handler: auto_recovery_monitor.lambda_handler
+      Runtime: python3.9
+      Timeout: 300
+      Environment:
+        Variables:
+          SNS_TOPIC_ARN: !Ref MonitoringTopic
+          ENVIRONMENT: !Ref Environment
+      Events:
+        ScheduledMonitor:
+          Type: Schedule
+          Properties:
+            Schedule: cron(*/15 * * * ? *)  # 15分毎実行
+            Description: "Every 15 minutes monitoring with auto recovery"
+      Policies:
+        - SNSPublishMessagePolicy:
+            TopicName: !GetAtt MonitoringTopic.TopicName
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - cloudwatch:*
+                - ec2:*
+                - ssm:*
+              Resource: '*'
+
+  # EC2インスタンス管理用のIAMロール（必要に応じて）
+  EC2ManagementRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub "${Environment}-ec2-auto-recovery-role"
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: EC2RestartPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - ec2:RebootInstances
+                  - ec2:DescribeInstances
+                  - ssm:SendCommand
+                  - ssm:GetCommandInvocation
+                Resource: '*'
+
+Outputs:
+  MonitoringTopicArn:
+    Description: SNS Topic ARN for auto recovery alerts
+    Value: !Ref MonitoringTopic
+  
+  AutoRecoveryMonitorFunctionArn:
+    Description: Auto recovery monitor Lambda function ARN
+    Value: !GetAtt AutoRecoveryMonitorFunction.Arn
+    
+  EC2ManagementRoleArn:
+    Description: EC2 management role ARN
+    Value: !GetAtt EC2ManagementRole.Arn
