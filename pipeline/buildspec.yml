@@ -1,0 +1,36 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.9
+    commands:
+      - echo "Installing SAM CLI"
+      - pip install aws-sam-cli
+      - echo "Installing dependencies"
+      - cd src && pip install -r requirements.txt -t . && cd ..
+
+  pre_build:
+    commands:
+      - echo "Pre-build phase started on `date`"
+      - echo "Validating SAM template"
+      - sam validate --template infrastructure/template.yaml
+
+  build:
+    commands:
+      - echo "Build phase started on `date`"
+      - echo "Building SAM application"
+      - sam build --template infrastructure/template.yaml --build-dir build
+      - echo "Packaging SAM application"
+      - sam package --template-file build/template.yaml --s3-bucket $ARTIFACTS_BUCKET --output-template-file packaged-template.yaml
+
+  post_build:
+    commands:
+      - echo "Post-build phase completed on `date`"
+      - echo "Build completed successfully"
+
+artifacts:
+  files:
+    - packaged-template.yaml
+    - infrastructure/parameters.json
+  name: cloudwatch-monitoring-artifacts

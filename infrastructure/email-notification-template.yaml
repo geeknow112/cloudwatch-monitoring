@@ -1,0 +1,62 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Email notification configuration for CloudWatch monitoring'
+
+Parameters:
+  Environment:
+    Type: String
+    Default: prod
+    Description: Environment name
+    
+  NotificationEmail:
+    Type: String
+    Description: Email address for notifications
+    Default: admin@example.com
+    
+  SNSTopicArn:
+    Type: String
+    Description: SNS Topic ARN for notifications
+    Default: arn:aws:sns:ap-northeast-1:<ACCOUNT_ID>:prod-system-alerts
+
+Resources:
+  # Email Subscription for SNS Topic
+  EmailSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      Protocol: email
+      TopicArn: !Ref SNSTopicArn
+      Endpoint: !Ref NotificationEmail
+
+  # Additional Email Subscriptions for different services
+  YC2EmailSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      Protocol: email
+      TopicArn: !Ref SNSTopicArn
+      Endpoint: !Sub "${Environment}-server-001-alerts@example.com"
+      FilterPolicy:
+        server: ["Server-001"]
+
+  YC3EmailSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      Protocol: email
+      TopicArn: !Ref SNSTopicArn
+      Endpoint: !Sub "${Environment}-server-002-alerts@example.com"
+      FilterPolicy:
+        server: ["Server-002"]
+
+Outputs:
+  EmailSubscriptionArn:
+    Description: Email Subscription ARN
+    Value: !Ref EmailSubscription
+    
+  SNSTopicArn:
+    Description: SNS Topic ARN
+    Value: !Ref SNSTopicArn
+    
+  SetupInstructions:
+    Description: Setup instructions
+    Value: !Sub |
+      1. メールアドレス ${NotificationEmail} に確認メールが送信されます
+      2. メール内のリンクをクリックして購読を確認してください
+      3. 確認後、CloudWatchアラートがメールで通知されます

@@ -1,0 +1,84 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'AWS Chatbot configuration for Slack notifications'
+
+Parameters:
+  Environment:
+    Type: String
+    Default: prod
+    Description: Environment name
+  
+  SlackWorkspaceId:
+    Type: String
+    Description: Slack Workspace ID
+    Default: <SLACK-WORKSPACE-ID>
+  
+  SlackChannelId:
+    Type: String
+    Description: Slack Channel ID for notifications
+    Default: C095CEZTSRZ
+    
+  SNSTopicArn:
+    Type: String
+    Description: SNS Topic ARN for notifications
+    Default: arn:aws:sns:ap-northeast-1:<ACCOUNT_ID>:prod-system-alerts
+
+Resources:
+  # IAM Role for Chatbot
+  ChatbotRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub "${Environment}-chatbot-role"
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: chatbot.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/CloudWatchReadOnlyAccess
+      Policies:
+        - PolicyName: ChatbotNotificationPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - sns:ListTopics
+                  - sns:GetTopicAttributes
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                  - logs:DescribeLogStreams
+                  - logs:DescribeLogGroups
+                Resource: "*"
+
+  # Chatbot Slack Configuration
+  SlackChannelConfiguration:
+    Type: AWS::Chatbot::SlackChannelConfiguration
+    Properties:
+      ConfigurationName: !Sub "${Environment}-cloudwatch-monitoring-slack"
+      SlackWorkspaceId: !Ref SlackWorkspaceId
+      SlackChannelId: !Ref SlackChannelId
+      IamRoleArn: !GetAtt ChatbotRole.Arn
+      SnsTopicArns:
+        - !Ref SNSTopicArn
+      LoggingLevel: ERROR
+      GuardrailPolicies:
+        - arn:aws:iam::aws:policy/CloudWatchReadOnlyAccess
+
+Outputs:
+  ChatbotConfigurationArn:
+    Description: Chatbot Configuration ARN
+    Value: !Ref SlackChannelConfiguration
+    
+  ChatbotRoleArn:
+    Description: Chatbot IAM Role ARN
+    Value: !GetAtt ChatbotRole.Arn
+    
+  SetupInstructions:
+    Description: Setup instructions
+    Value: !Sub |
+      1. SlackでAWSアプリを承認してください
+      2. チャンネルIDを取得してパラメータを更新してください
+      3. SNSトピック ${SNSTopicArn} からの通知がSlackに送信されます
